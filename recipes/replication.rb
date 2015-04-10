@@ -29,5 +29,5 @@ execute "mysql-set-replication" do  # ~FC009 - `sensitive`
   command "/usr/bin/mysql #{root_pass} < #{replication_sql}"
   action :nothing
   subscribes :run, resources("template[#{replication_sql}]"), :immediately
-  sensitive true if Chef::Resource::Template.method_defined? :sensitive
+  sensitive true if Chef::Resource::Execute.method_defined? :sensitive
 end

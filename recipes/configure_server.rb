@@ -135,7 +135,7 @@ unless node["percona"]["skip_passwords"]
   execute "Update MySQL root password" do  # ~FC009 - `sensitive`
     command "mysqladmin --user=root --password='' password '#{root_pw}'"
     only_if "mysqladmin --user=root --password='' version"
-    sensitive true if Chef::Resource::Template.method_defined? :sensitive
+    sensitive true if Chef::Resource::Execute.method_defined? :sensitive
   end
 end
 

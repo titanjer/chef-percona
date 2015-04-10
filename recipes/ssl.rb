@@ -17,14 +17,14 @@ certs = Chef::EncryptedDataBagItem.load(data_bag, "ssl_replication")
 # place the CA certificate, it should be present on both master and slave
 file "#{certs_path}/cacert.pem" do
   content certs["ca-cert"]
-  sensitive true if Chef::Resource::Template.method_defined? :sensitive
+  sensitive true if Chef::Resource::File.method_defined? :sensitive
 end
 
 %w[cert key].each do |file|
   # place certificate and key for master
   file "#{certs_path}/server-#{file}.pem" do
     content certs["server"]["server-#{file}"]
-    sensitive true if Chef::Resource::Template.method_defined? :sensitive
+    sensitive true if Chef::Resource::File.method_defined? :sensitive
     only_if { server["role"].include?("master") }
   end
 
@@ -32,7 +32,7 @@ end
   # place slave certificate and key
   file "#{certs_path}/client-#{file}.pem" do
     content certs["client"]["client-#{file}"]
-    sensitive true if Chef::Resource::Template.method_defined? :sensitive
+    sensitive true if Chef::Resource::File.method_defined? :sensitive
     only_if { server["role"].include?("slave") }
   end
 end
