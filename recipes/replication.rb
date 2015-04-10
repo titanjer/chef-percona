@@ -16,7 +16,7 @@ template replication_sql do
   owner "root"
   group "root"
   mode "0600"
-  sensitive true
+  sensitive true if Chef::Resource::Template.method_defined? :sensitive
   only_if do
     server["replication"]["host"] != "" || server["role"].include?("master")
   end
@@ -29,5 +29,5 @@ execute "mysql-set-replication" do  # ~FC009 - `sensitive`
   command "/usr/bin/mysql #{root_pass} < #{replication_sql}"
   action :nothing
   subscribes :run, resources("template[#{replication_sql}]"), :immediately
-  sensitive true
+  sensitive true if Chef::Resource::Template.method_defined? :sensitive
 end
